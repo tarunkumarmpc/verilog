@@ -1,0 +1,36 @@
+module HalfSubstractor(a,b,diff,borrow);
+	input a,b;
+	output diff,borrow;
+	xor(diff,a,b);
+	assign borrow=(~a&b);
+endmodule
+
+
+module TestModule;
+	reg a;
+	reg b;
+	wire diff;
+	wire borrow;
+	HalfSubstractor uut (
+		.a(a), 
+		.b(b), 
+		.difference(difference), 
+		.borrow(borrow)
+	);
+
+	initial begin  
+    a = 1'b0; b = 1'b0; //a = 0, b = 0
+#10 a = 1'b0; b = 1'b1;	//a = 0, b = 1
+#10 a = 1'b1; b = 1'b0;	//a = 1, b = 0
+#10 a = 1'b1; b = 1'b1;	//a = 1, b = 1
+  end
+  
+  initial #50 $finish;
+  
+initial
+begin
+$monitor("a=%d,b=%d,diff=%d,borrow=%d \n",a,b,diff,borrow);
+end
+endmodule
+		
+     

@@ -1,0 +1,48 @@
+module SR_flipflop(q,q1,r,s,clk,rst);
+output q,q1;
+input r,s,clk,rst;
+reg q,q1;
+initial
+begin
+q=1'b0; q1=1'b1;                   
+end
+always @(posedge clk)
+begin
+case({s,r})
+{1'b0,1'b0}: begin q=q; q1=q1; end
+{1'b0,1'b1}: begin q=1'b0; q1=1'b1; end
+{1'b1,1'b0}: begin q=1'b1; q1=1'b0; end
+{1'b1,1'b1}: begin q=1'bx; q=1'bx; end
+endcase
+end
+endmodule
+
+
+module test_srflipf(); 
+reg r,s,clk,rst;
+wire q,q1;
+
+ SR_flipflop i0(.q(q),.q1(q1),.r(r),.s(s),.clk(clk),.rst(rst));
+
+
+initial begin
+clk=0;
+   forever #1 clk=~clk;
+end
+
+
+initial 
+begin 
+#0;r=1;s=0;rst=1;
+#1;r=0;s=0;rst=1;
+#2;r=1;s=1;rst=1;
+#3;r=0;s=1;rst=1;
+#4;r=0;s=0;rst=1;
+#5;r=1;s=0;rst=1;
+$finish;
+end
+	
+always@(*) begin
+		$display("%d %d %d %d  %d  ",$time,&r,&s,&q,&q1);
+end
+endmodule

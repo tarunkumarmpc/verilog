@@ -1,0 +1,37 @@
+module ha(a, b, sum, carry);
+input a;
+input b;
+output sum;
+output carry;
+
+assign carry=a&b;                           
+assign sum=a^b;                             
+
+endmodule
+
+
+
+module halfaddert_b;
+reg a,b;
+wire sum,carry;
+Ha uut (
+		.a(a), 
+		.b(b), 
+		.sum(sum), 
+		.carry(carry)
+	);
+initial begin  
+ 
+  
+    a = 1'b0; b = 1'b0; //a = 0, b = 0
+#10 a = 1'b0; b = 1'b1;	//a = 0, b = 1
+#10 a = 1'b1; b = 1'b0;	//a = 1, b = 0
+#10 a = 1'b1; b = 1'b1;	//a = 1, b = 1
+  end
+  
+  initial #50 $finish;
+  
+
+initial begin
+$monitor ($time, ,"a=%b,b=%b,sum=%b,carry=%b",a,b,sum,carry);
+endmodule
